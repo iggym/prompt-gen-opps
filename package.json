@@ -1,0 +1,20 @@
+{
+  "name": "prompt-gen-opps",
+  "version": "1.0.0",
+  "description": "Static market research and opportunity assessment prompt generator for GitHub Pages.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests/prompt-engine.test.js",
+    "build": "node scripts/build.js"
+  },
+  "keywords": [
+    "prompt-generator",
+    "market-research",
+    "opportunity-assessment",
+    "github-pages"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {}
+}
