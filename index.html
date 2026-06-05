@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Generate expert market research, startup validation, competitive intelligence, and opportunity assessment prompts entirely client-side." />
+    <title>Opportunity Prompt Studio</title>
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <nav class="topbar" aria-label="Primary navigation">
+        <a class="brand" href="#builder" aria-label="Opportunity Prompt Studio home">
+          <span class="brand-mark">OPS</span>
+          <span>Opportunity Prompt Studio</span>
+        </a>
+        <div class="topbar-actions">
+          <a href="#templates">Templates</a>
+          <a href="#workspace">Workspace</a>
+          <button id="themeToggle" class="ghost" type="button" aria-label="Toggle color theme">🌙</button>
+        </div>
+      </nav>
+      <section class="hero-grid">
+        <div>
+          <p class="eyebrow">250+ expert prompt templates • no backend • GitHub Pages ready</p>
+          <h1>Build better market research and opportunity prompts in minutes.</h1>
+          <p class="hero-copy">Generate structured prompts for market sizing, startup validation, customer discovery, competitive intelligence, AI/SaaS opportunity discovery, and multi-step research workflows.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#builder">Start generating</a>
+            <a class="button secondary" href="#docs">View frameworks</a>
+          </div>
+        </div>
+        <aside class="stat-card" aria-label="Application capabilities">
+          <strong>Offline-first prompt engine</strong>
+          <dl>
+            <div><dt>Templates</dt><dd id="templateCount">250+</dd></div>
+            <div><dt>Exports</dt><dd>TXT / MD / JSON</dd></div>
+            <div><dt>Storage</dt><dd>Local only</dd></div>
+          </dl>
+        </aside>
+      </section>
+    </header>
+
+    <main>
+      <section id="builder" class="panel builder-panel" aria-labelledby="builderTitle">
+        <div class="section-heading">
+          <p class="eyebrow">Prompt Builder</p>
+          <h2 id="builderTitle">Configure your research prompt</h2>
+          <p>Pick a template, tune the parameters, adjust scoring weights, and copy or export the live prompt.</p>
+        </div>
+
+        <div class="builder-layout">
+          <form id="promptForm" class="controls" autocomplete="off">
+            <label>Search templates
+              <input id="templateSearch" type="search" placeholder="e.g. TAM, competitor, AI agents" />
+            </label>
+            <div class="two-col">
+              <label>Category
+                <select id="categorySelect"></select>
+              </label>
+              <label>Template
+                <select id="templateSelect"></select>
+              </label>
+            </div>
+            <div class="two-col">
+              <label>Framework
+                <select id="frameworkSelect"></select>
+              </label>
+              <label>Research depth
+                <select id="depthSelect">
+                  <option>Quick Scan</option>
+                  <option selected>Standard</option>
+                  <option>Deep Dive</option>
+                  <option>Expert Analysis</option>
+                </select>
+              </label>
+            </div>
+            <label>Opportunity, product, company, or niche
+              <input id="topicInput" type="text" value="AI workflow automation tools for boutique consulting firms" />
+            </label>
+            <div class="two-col">
+              <label>Industry
+                <input id="industryInput" type="text" value="AI SaaS" list="industryOptions" />
+              </label>
+              <label>Geography
+                <input id="geoInput" type="text" value="United States" list="geoOptions" />
+              </label>
+            </div>
+            <div class="two-col">
+              <label>Customer type
+                <select id="customerSelect">
+                  <option>B2B</option><option>B2C</option><option selected>SMB</option><option>Enterprise</option><option>Government</option>
+                </select>
+              </label>
+              <label>Output format
+                <select id="formatSelect"></select>
+              </label>
+            </div>
+            <label>Additional context
+              <textarea id="contextInput" rows="4" placeholder="Constraints, known competitors, budget, audience, time horizon..."></textarea>
+            </label>
+
+            <fieldset class="weights">
+              <legend>Opportunity scoring weights</legend>
+              <div id="weightsGrid"></div>
+              <output id="weightTotal" aria-live="polite"></output>
+            </fieldset>
+          </form>
+
+          <section class="preview-card" aria-labelledby="previewTitle">
+            <div class="preview-header">
+              <div>
+                <p class="eyebrow">Live Preview</p>
+                <h3 id="previewTitle">Generated prompt</h3>
+              </div>
+              <span id="tokenEstimate" class="pill">~0 words</span>
+            </div>
+            <textarea id="promptPreview" readonly rows="24" aria-label="Generated prompt preview"></textarea>
+            <div class="button-row">
+              <button id="copyPrompt" class="primary" type="button">Copy prompt</button>
+              <button id="savePrompt" type="button">Save</button>
+              <button id="exportTxt" type="button">TXT</button>
+              <button id="exportMd" type="button">Markdown</button>
+              <button id="exportJson" type="button">JSON</button>
+            </div>
+            <p id="copyStatus" class="status" role="status" aria-live="polite"></p>
+          </section>
+        </div>
+      </section>
+
+      <section id="chain" class="panel" aria-labelledby="chainTitle">
+        <div class="section-heading">
+          <p class="eyebrow">Prompt Chaining</p>
+          <h2 id="chainTitle">Generate a seven-step research workflow</h2>
+        </div>
+        <div class="chain-grid" id="chainGrid"></div>
+        <button id="copyChain" class="primary" type="button">Copy full chain</button>
+      </section>
+
+      <section id="templates" class="panel" aria-labelledby="templatesTitle">
+        <div class="section-heading split">
+          <div>
+            <p class="eyebrow">Template Library</p>
+            <h2 id="templatesTitle">Searchable prompt assets</h2>
+          </div>
+          <input id="librarySearch" type="search" placeholder="Filter by keyword or tag" aria-label="Search template library" />
+        </div>
+        <div id="templateLibrary" class="template-library"></div>
+      </section>
+
+      <section id="workspace" class="panel" aria-labelledby="workspaceTitle">
+        <div class="section-heading split">
+          <div>
+            <p class="eyebrow">Saved Workspace</p>
+            <h2 id="workspaceTitle">Local prompt collection</h2>
+            <p>Saved prompts stay in this browser using localStorage. No data leaves the device.</p>
+          </div>
+          <button id="clearWorkspace" class="danger" type="button">Clear all</button>
+        </div>
+        <div id="savedPrompts" class="saved-grid"></div>
+      </section>
+
+      <section id="docs" class="panel docs" aria-labelledby="docsTitle">
+        <div class="section-heading">
+          <p class="eyebrow">Knowledge Assets</p>
+          <h2 id="docsTitle">Frameworks and market research glossary</h2>
+        </div>
+        <div id="frameworkDocs" class="docs-grid"></div>
+        <div id="glossaryDocs" class="docs-grid glossary"></div>
+      </section>
+    </main>
+
+    <datalist id="industryOptions"><option>AI</option><option>SaaS</option><option>Healthcare</option><option>Finance</option><option>Education</option><option>Manufacturing</option><option>Energy</option><option>Robotics</option></datalist>
+    <datalist id="geoOptions"><option>Global</option><option>North America</option><option>United States</option><option>Europe</option><option>Asia</option></datalist>
+
+    <script type="module" src="src/app.js"></script>
+  </body>
+</html>
